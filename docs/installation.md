@@ -56,7 +56,7 @@ You need these 3 files in your Space repository:
 
 ### `RoboticArm.py`
 
-Your main Streamlit app. [See source content](#RoboticArm.py)
+Your main Streamlit app. [See source content](../RoboticArm.py)
 
 ---
 
