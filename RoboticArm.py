@@ -120,7 +120,7 @@ with tab1:
                     api.upload_file(
                             path_or_fileobj=fobj,
                             path_in_repo="response_llm_json.json",
-                            repo_id="noesishub/XYZ",
+                            repo_id="domain/XYZ",
                             repo_type="dataset",
                             commit_message="Upload generated file",
                             token=os.getenv("HF_TOKEN")

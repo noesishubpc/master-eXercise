@@ -1,4 +1,3 @@
-
 # Pilot Project Report: NLP-based Trainer
 
 ## 1 Objective
