@@ -1,6 +1,6 @@
 # Robotic Arm & AI Advisor Installation & Deployment Guide
 
-This guide walks you through deploying the **Robotic Arm & AI Advisor** Streamlit app to a Hugging Face Space.
+This guide walks you through deploying the **Robotic Arm & AI Advisor** Streamlit app to a Hugging Face Space and configuring a Hugging Face dataset `XYZ` for storing LLM result JSON files.
 
 ---
 
@@ -11,17 +11,19 @@ Make sure you have:
 - A [Hugging Face account](https://huggingface.co/join)
 - `git` installed on your machine
 - `Python >= 3.11` installed
+- A valid Hugging Face token (`HF_TOKEN`) with write permissions
+- (Optional) An OpenAI API key (`OPENAI_API_KEY`) if using OpenAI models
 
 ---
 
 ## 2. Create a Hugging Face Space
 
 1. Go to [Create a New Space](https://huggingface.co/new-space).
-2. Fill in the following:
-   - **SDK**: `Streamlit`
-   - **Space Name**: e.g., `robotic-arm-selector`
-   - **License**: Select one appropriate for your work
-   - **Visibility**: Choose `Public` or `Private`
+2. Fill in:
+      - **SDK**: `Streamlit`
+      - **Space Name**: e.g., `robotic-arm-selector`
+      - **License**: Select one appropriate
+      - **Visibility**: `Public` or `Private`
 3. Click **Create Space**.
 
 ---
@@ -36,52 +38,47 @@ Make sure you have:
 
 ### B. Add Hugging Face Token to Space
 
-1. Go to your Space → **Settings > Secrets**.
+1. In your Space, go to **Settings > Secrets**.
 2. Add a new secret:
    - **Name**: `HF_TOKEN`
    - **Value**: your copied token
 
 ### C. (Optional) Add OpenAI Token
 
-If you're using OpenAI models like `gpt-4o`, also add:
+If using OpenAI models (`gpt-4o`, etc.), add:
 
 - **Name**: `OPENAI_API_KEY`
-- **Value**: your OpenAI API key from [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys)
+- **Value**: your OpenAI API key
 
 ---
 
 ## 4. Prepare and Upload Your Files
 
-You need these 3 files in your Space repository:
+You need these files in your Space repository:
 
 ### `RoboticArm.py`
 
-Your main Streamlit app. [See source content](../RoboticArm.py)
-
----
+Your main Streamlit app. Ensure it includes code for uploading LLM result JSON to a Hugging Face dataset (see Section 7). [See source content](https://github.com/noesishubpc/master-eXercise/blob/main/RoboticArm.py)
 
 ### `requirements.txt`
 
-Dependencies to install:
-
+List dependencies:
 ```
 streamlit
-huggingface_hub==0.31.4
+huggingface_hub>=0.31.4
 sentence-transformers
 openai
 pydantic
+requests
 ```
-
----
 
 ### `README.md`
 
-Configuration file for your Hugging Face Space:
-
-```
+Configure your Space:
+```yaml
 title: RoboticArm
 sdk: streamlit
-emoji: 🌖
+emoji: (see file to render)
 colorFrom: pink
 colorTo: indigo
 sdk_version: 1.44.1
@@ -118,31 +115,79 @@ git commit -m "Add initial app files"
 git push
 ```
 
----
-
-## 6. Final Steps
-
-Once uploaded, your Space will automatically build and deploy.
-
-You can:
-
-- View your app live from the Space page.
-- Share the URL with others.
-- Embed it in other websites or documentation.
+Once uploaded, the Space will build and deploy automatically. View and test your app via the Space URL.
 
 ---
 
-## Troubleshooting Tips
+## 6. Create and Configure the Hugging Face Dataset `XYZ`
 
-- **App stuck on “Building…”**: Check the `requirements.txt` and Space logs.
-- **`HF_TOKEN` or OpenAI issues**: Double-check secret names and values.
-- **Incompatible Python version**: Ensure `python_version: '3.11'` is set in your `README.md`.
+To store LLM result JSON files from the app, create a HF dataset repository. Name of the dataset can be anything! As long as you replace XYZ with your name of the dataset.
+
+### A. Create the dataset repository
+
+You can do this locally or via the website.
+
+1. **Via CLI (locally)**:
+   ```bash
+   huggingface-cli login
+   huggingface-cli repo create XYZ --type dataset
+   ```
+   Replace `XYZ` with your chosen name. Choose `public` or `private` as needed.
+
+2. **Via Web UI**:
+      - Go to [New dataset](https://huggingface.co/new-dataset).
+      - Name it `XYZ`, set visibility.
+
+3. **Record the full repo ID**: e.g. `your-username/XYZ`. This will be used in code.
+
+### B. Add HF token for dataset access
+
+- In your local environment (if testing outside Spaces), set:
+  ```bash
+  export HF_TOKEN="<your_hf_token>"
+  ```
+- In the Space, you already added `HF_TOKEN` as a secret (Section 3).
 
 ---
 
-## Reference
+## 7. Integrate Dataset Upload in `RoboticArm.py`
 
-- [Spaces Documentation](https://huggingface.co/docs/hub/spaces)
-- [Streamlit SDK Docs](https://huggingface.co/docs/hub/spaces-sdks-streamlit)
+Modify your Streamlit app to upload LLM results (`response_llm_json.json`) to the `XYZ` dataset.
+
+In order to divert to your dataset, locate the following code snippet and edit it appropriately to match your own Hugging Face dataset.
+
+```python
+api = HfApi()
+with open("response_llm_json.json", "rb") as fobj:
+   api.upload_file(
+         path_or_fileobj=fobj,
+         path_in_repo="response_llm_json.json",
+         repo_id="your-username/XYZ",
+         repo_type="dataset",
+         commit_message="Upload generated file",
+         token=os.getenv("HF_TOKEN")
+   )
+```
+
+**Replace** `repo_id` with your dataset ID/ dataset name.
 
 ---
+
+## 8. Testing the Upload Flow
+
+1. Deploy or run the app in your Space.
+2. In the UI, enter a valid prompt to trigger LLM call and JSON creation.
+3. Observe the Streamlit UI for success message.
+4. Visit your Hugging Face dataset page: https://huggingface.co/datasets/your-username/XYZ to see uploaded JSON files.
+
+---
+
+## 9. Appendix: Example Workflow Summary
+
+1. **Create Space** and add secrets (`HF_TOKEN`, optionally `OPENAI_API_KEY`).
+2. **Create HF dataset** named `XYZ`, note `your-username/XYZ`.
+3. **Prepare files** (`RoboticArm.py`, `requirements.txt`, `README.md`) with upload logic.
+4. **Upload files** to Space via UI or Git, then deploy.
+5. **Test** the app: trigger LLM, observe upload success in UI.
+6. **Verify** dataset contents on HF Hub.
+

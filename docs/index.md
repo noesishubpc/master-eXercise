@@ -1,4 +1,4 @@
-# eXercise OPEN CALL PROJECT
+# eXRercise sub-project of the MASTER first Open Call (OC)
 
 
 The following documentation addresses the integration of assets developed using Unity Engine and the Unity Editor, for the purposes of the MASTER OC project **eXercise**.

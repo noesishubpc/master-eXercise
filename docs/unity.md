@@ -1,4 +1,4 @@
-# VR SCENARIO CREATION LIBRARY
+# XR Scenario Creator
 
 ## 1 Components Implemented
 
