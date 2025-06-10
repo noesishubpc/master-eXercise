@@ -1,4 +1,3 @@
----
 title: RoboticArm
 sdk: streamlit
 emoji: 🌖
@@ -8,4 +7,3 @@ sdk_version: 1.44.1
 app_file: RoboticArm.py
 pinned: false
 python_version: '3.11'
----
