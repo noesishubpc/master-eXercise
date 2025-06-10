@@ -1,5 +1,5 @@
 title: RoboticArm
-sdk: streamlit
+sdk: streamlitss
 emoji: 🌖
 colorFrom: pink
 colorTo: indigo
