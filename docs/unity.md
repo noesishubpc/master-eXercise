@@ -3,17 +3,17 @@
 ## 1 Components Implemented
 
 Two key components have been developed:
-- **Behaviour** component
+- **BusinessLogic** component
 - **HuggingFaceJsonFetcher** component
 
-The `Behaviour` is designed to accommodate the virtual robotic arms used in your Unity scene. You can assign it via the Unity Inspector, as shown below:
+The `BusinessLogic` is designed to accommodate the virtual robotic arms used in your Unity scene. You can assign it via the Unity Inspector, as shown below:
 
 ![Loading Behavior and HuggingFaceJsonFetcher components](assets/images/empty-behaviour.png)
-*Example showing the Behaviour component fields in the Unity Inspector.*
+*Example showing the BusinessLogic component fields in the Unity Inspector.*
 
 ---
 
-## 2 Behaviour Component Fields Overview
+## 2 BusinessLogic Component Fields Overview
 
 All fields listed below are customizable for flexibility across different environments and training goals.
 
@@ -29,7 +29,7 @@ All fields listed below are customizable for flexibility across different enviro
 
 ---
 
-### 2.1 Behaviour Component Field Descriptions
+### 2.1 BusinessLogic Component Field Descriptions
 
 #### 2.1.1 `deviceAnimators` (Animator[])
 A list of Animator components. Assign any GameObject (e.g., robotic arms) that contains an Animator. If no Animator is present, it will not work.
@@ -56,7 +56,7 @@ Audio source used to play the `malfunctioningClip`.
 
 ## 3 Unity Integration Guide – HuggingFace JSON Fetcher
 
-This section explains how to use the `HuggingFaceJsonFetcher` Unity component alongside `Behaviour` to create automated, LLM-driven VR scenarios using structured JSON input. 
+This section explains how to use the `HuggingFaceJsonFetcher` Unity component alongside `BusinessLogic` to create automated, LLM-driven VR scenarios using structured JSON input. 
 
 The trainer promets in the provided LLM, the desired scenario (fire, malfuncationing incident or even both) and the LLM return a selection of the selected robotic arm which will virtually be set on fire. 
 When the traineed start the VR application, the library retrieves the structured ouput of the LLM, which indicated the robotic devices to be set on fire, malfunction or in case of a combination (a selection of max. 2 robotic devices) of the incidents which coresponding robotic device suffers which disaster.
@@ -84,7 +84,7 @@ This component, retrieves the LLM structured output from a dataset repository, w
 
 ---
 
-Below we show how a fully configured Behaviour and HuggingFaceJsonFetcher component looks like.
+Below we show how a fully configured BusinessLogic and HuggingFaceJsonFetcher component looks like.
 
 ![Inspector Screenshot](assets/images/full-set-up.png)  
 *Example showing how both components can be configured in the Unity Inspector. This is a fully functional configuration.*
