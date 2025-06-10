@@ -1,0 +1,5 @@
+streamlit
+huggingface_hub==0.31.4
+sentence-transformers
+openai
+pydantic

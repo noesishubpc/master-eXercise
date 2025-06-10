@@ -3,6 +3,7 @@ site_name: eXercise OPEN CALL PROJECT
 nav:
   - Introduction: index.md
   - Hugging Face: huggingface.md
+  - Installation: installation.md
   - Unity DLL: unity.md
 
 theme:
@@ -46,4 +47,4 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/your-repo
+      link: https://github.com/noesishubpc/master-eXercise
